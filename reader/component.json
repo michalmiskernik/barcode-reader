@@ -1,0 +1,7 @@
+{
+  "name": "reader",
+  "version": "0.0.0",
+  "scripts": [
+    "index.js"
+  ]
+}
