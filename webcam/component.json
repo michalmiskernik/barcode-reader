@@ -1,0 +1,8 @@
+{
+  "name": "webcam",
+  "description": "Capture video from webcam",
+  "version": "0.0.0",
+  "scripts": [
+    "index.js"
+  ]
+}
