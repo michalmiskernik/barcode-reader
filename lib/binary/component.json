@@ -1,0 +1,6 @@
+{
+  "name": "binary",
+  "paths": [".."],
+  "local": ["webcam"],
+  "scripts": ["index.js"]
+}

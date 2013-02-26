@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Binary image</title>
+
+    <style>
+      canvas, .controls {
+        float: left;
+      }
+
+      .controls {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+
+    <div class="controls">
+      <form name="controls">
+        <div>
+          <label><input name="binary" type="checkbox"> Binary image</label>
+        </div>
+      </form>
+    </div>
+
+    <script src="build/build.js"></script>
+    <script>
+      var webcam = require('webcam'),
+          binary = require('binary');
+
+      // canvas
+
+      var canvas = document.querySelector('canvas'),
+          ctx = canvas.getContext('2d');
+
+      // controls
+
+      var form = document.querySelector('form');
+
+      // processing
+
+      function run(video) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        setInterval(function() {
+
+          ctx.drawImage(video, 0, 0);
+
+          if (form.binary.checked) {
+            var image = ctx.getImageData(0, 0, canvas.width, canvas.height),
+                data = image.data;
+
+            binary.convert(data);
+
+            ctx.putImageData(image, 0, 0);
+          }
+
+        }, 1000 / 60);
+      }
+
+      webcam({ success: run });
+    </script>
+  </body>
+</html>
