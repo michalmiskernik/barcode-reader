@@ -1,0 +1,14 @@
+{
+  "name": "checker",
+  "version": "0.0.0",
+  "local": [
+    "reader"
+  ],
+  "dependencies": {
+    "component/emitter": "*",
+    "component/bind": "*"
+  },
+  "scripts": [
+    "index.js"
+  ]
+}
