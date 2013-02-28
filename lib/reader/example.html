@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Barcode reader</title>
+  </head>
+  <body>
+    <script src="build/build.js"></script>
+    <script>
+      var reader = require('reader');
+
+      var img = new Image;
+      img.onload = init;
+      img.src = 'assets/barcode.jpg';
+
+      var canvas = document.createElement('canvas'),
+          ctx = canvas.getContext('2d');
+
+      var data;
+
+      function init() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0);
+
+        data = ctx.getImageData(0, 0, img.width, img.height);
+
+        read();
+      }
+
+      function read() {
+        var codes = reader.read(data);
+        console.log(codes);
+      }
+    </script>
+  </body>
+</html>
