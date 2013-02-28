@@ -1,0 +1,8 @@
+{
+  "name": "codes",
+  "version": "0.0.0",
+  "scripts": [
+    "index.js",
+    "ean_13.js"
+  ]
+}
