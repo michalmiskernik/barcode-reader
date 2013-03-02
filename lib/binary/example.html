@@ -20,8 +20,6 @@
     <script>
       var binary = require('binary');
 
-      var data;
-
       var canvas = document.querySelector('canvas'),
           ctx = canvas.getContext('2d');
 
@@ -36,11 +34,29 @@
         canvas.height = this.height;
 
         ctx.drawImage(this, 0, 0);
-
-        data = ctx.getImageData(0, 0, this.width, this.height);
-
-        console.log(data);
       }
+
+      function convert(x, y, w, h) {
+        h = h || w;
+
+        var rect = ctx.getImageData(x, y, w, h);
+        binary.convert(rect.data);
+        ctx.putImageData(rect, x, y);
+        return rect;
+      }
+      
+      var first;
+      canvas.onclick = function(e) {
+        var x = e.offsetX,
+            y = e.offsetY;
+
+        if (first == null) {
+          first = [x, y];
+        } else {
+          convert(first[0], first[1], x - first[0], y - first[1]);
+          first = null;
+        }
+      };
     </script>
   </body>
 </html>
