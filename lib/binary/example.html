@@ -16,51 +16,31 @@
   <body>
     <canvas></canvas>
 
-    <div class="controls">
-      <form name="controls">
-        <div>
-          <label><input name="binary" type="checkbox"> Binary image</label>
-        </div>
-      </form>
-    </div>
-
     <script src="build/build.js"></script>
     <script>
-      var webcam = require('webcam'),
-          binary = require('binary');
+      var binary = require('binary');
 
-      // canvas
+      var data;
 
       var canvas = document.querySelector('canvas'),
           ctx = canvas.getContext('2d');
 
-      // controls
-
-      var form = document.querySelector('form');
-
-      // processing
-
-      function run(video) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        setInterval(function() {
-
-          ctx.drawImage(video, 0, 0);
-
-          if (form.binary.checked) {
-            var image = ctx.getImageData(0, 0, canvas.width, canvas.height),
-                data = image.data;
-
-            binary.convert(data);
-
-            ctx.putImageData(image, 0, 0);
-          }
-
-        }, 1000 / 60);
+      function load(url) {
+        var img = new Image;
+        img.onload = loaded;
+        img.src = url;
       }
 
-      webcam({ success: run });
+      function loaded() {
+        canvas.width = this.width;
+        canvas.height = this.height;
+
+        ctx.drawImage(this, 0, 0);
+
+        data = ctx.getImageData(0, 0, this.width, this.height);
+
+        console.log(data);
+      }
     </script>
   </body>
 </html>
