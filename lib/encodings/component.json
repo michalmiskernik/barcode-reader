@@ -1,0 +1,7 @@
+{
+  "name": "encodings",
+  "scripts": [
+    "index.js",
+    "ean_13.js"
+  ]
+}
