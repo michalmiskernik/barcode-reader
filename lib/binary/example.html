@@ -40,7 +40,7 @@
         h = h || w;
 
         var rect = ctx.getImageData(x, y, w, h);
-        binary.convert(rect.data);
+        binary.replace(rect.data);
         ctx.putImageData(rect, x, y);
         return rect;
       }
