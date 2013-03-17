@@ -6,6 +6,7 @@
     "codes"
   ],
   "scripts": [
+    "index.js",
     "reader.js",
     "utils.js",
     "run_lengths.js"

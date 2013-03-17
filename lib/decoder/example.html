@@ -5,35 +5,10 @@
     <div>
       <canvas id="ui"></canvas>
     </div>
-    <div>
-      <canvas id="preview"></canvas>
-    </div>
 
     <script src="build/build.js"></script>
     <script>
-      var binary = require('binary'),
-          reader = require('decoder/reader.js');
-
-      var preview = {
-        canvas: document.querySelector('#preview'),
-
-        init: function() {
-          preview.ctx = preview.canvas.getContext('2d');
-          preview.canvas.height = 20;
-        },
-
-        show: function(data) {
-          if (data.height != 1) {
-            throw new Error('ImageData is too high');
-          }
-          
-          preview.canvas.width = data.width;
-
-          for (var i = 1; i <= 20; i++) {
-            preview.ctx.putImageData(data, 0, i);
-          }
-        }
-      };
+      var decoder = require('decoder');
 
       var ui = {
         img: document.createElement('img'),
@@ -41,7 +16,6 @@
 
         init: function() {
           ui.ctx = ui.canvas.getContext('2d');
-          ui.canvas.onmousemove = ui.update;
           ui.img.onload = ui.draw;
         },
 
@@ -49,17 +23,11 @@
           ui.img.src = url;
         },
 
-        update: function(e) {
-          var y = e.offsetY;
-
-          var forPreview = ui.ctx.getImageData(0, y, ui.canvas.width, 1),
-              forReading = ui.ctx.getImageData(0, y, ui.canvas.width, 1);
-
-          binary.replace(forPreview.data);
-          preview.show(forPreview);
+        read: function() {
+          var data = ui.ctx.getImageData(0, 0, ui.canvas.width, ui.canvas.height);
           
-          var bits = binary.transform(forReading.data);
-          console.log(reader.read(bits));
+          var codes = decoder.decode(data);
+          console.log(codes);
         },
 
         draw: function() {
@@ -67,13 +35,14 @@
           ui.canvas.height = ui.img.height;
           
           ui.ctx.drawImage(ui.img, 0, 0);
+
+          ui.read();
         }
       };
 
-      preview.init();
       ui.init();
 
-      ui.load('assets/cropped.jpg');
+      ui.load('assets/from_book_cropped.jpg');
     </script>
   </body>
 </html>
