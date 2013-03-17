@@ -2,7 +2,7 @@
   "name": "checker",
   "version": "0.0.0",
   "local": [
-    "reader"
+    "decoder"
   ],
   "dependencies": {
     "component/emitter": "*",
