@@ -1,0 +1,13 @@
+{
+  "name": "decoder",
+  "paths": [".."],
+  "local": [
+    "binary",
+    "encodings"
+  ],
+  "scripts": [
+    "reader.js",
+    "utils.js",
+    "run_lengths.js"
+  ]
+}
