@@ -3,7 +3,7 @@
   "paths": [".."],
   "local": [
     "binary",
-    "encodings"
+    "codes"
   ],
   "scripts": [
     "reader.js",
