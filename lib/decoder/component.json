@@ -3,12 +3,10 @@
   "paths": [".."],
   "local": [
     "binary",
-    "codes"
+    "codes",
+    "reader"
   ],
   "scripts": [
-    "index.js",
-    "reader.js",
-    "utils.js",
-    "run_lengths.js"
+    "index.js"
   ]
 }

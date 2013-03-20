@@ -1,0 +1,12 @@
+{
+  "name": "reader",
+  "paths": [".."],
+  "local": [
+    "codes"
+  ],
+  "scripts": [
+    "index.js",
+    "helpers.js",
+    "run_lengths.js"
+  ]
+}
