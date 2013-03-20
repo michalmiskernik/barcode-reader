@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Clicking decoding example</title>
+  </head>
+
+  <body>
+    <canvas id="ui"></canvas>
+
+    <script src="../build/build.js"></script>
+    <script>
+      var decoder = require('decoder'),
+          binary = require('binary');
+
+      var ui = {
+        img: document.createElement('img'),
+        canvas: document.querySelector('#ui'),
+
+        first: null,
+
+        init: function() {
+          ui.ctx = ui.canvas.getContext('2d');
+          ui.img.onload = ui.draw;
+          ui.canvas.onclick = ui.click;
+        },
+
+        load: function(url) {
+          ui.img.src = url;
+        },
+
+        click: function(e) {
+          var x = e.offsetX,
+              y = e.offsetY;
+
+          if (ui.first == null) {
+            ui.first = [x, y];
+          } else {
+            var data = ui.ctx.getImageData(ui.first[0], ui.first[1], x - ui.first[0], 1),
+                codes = decoder.decode(data);
+
+            console.log(codes);
+
+            binary.replace(data.data);
+            ui.ctx.putImageData(data, ui.first[0], ui.first[1]);
+
+            ui.first = null;
+          }
+        },
+
+        draw: function() {
+          ui.canvas.width = ui.img.width;
+          ui.canvas.height = ui.img.height;
+          
+          ui.ctx.drawImage(ui.img, 0, 0);
+        }
+      };
+
+      ui.init();
+
+      ui.load('../assets/from_book_cropped.jpg');
+    </script>
+  </body>
+</html>
