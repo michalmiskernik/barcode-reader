@@ -1,0 +1,10 @@
+{
+  "name": "signal",
+  "paths": [".."],
+  "local": [
+    "binary"
+  ],
+  "scripts": [
+    "index.js"
+  ]
+}

@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Signal visualisation</title>
+
+    <style>
+      canvas {
+        display: block;
+        border: 1px solid gray;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="image"></canvas>
+
+    <canvas id="signal"></canvas>
+    <canvas id="smooth"></canvas>
+    <canvas id="derivated"></canvas>
+
+    <script src="../build/build.js"></script>
+    <script>
+      var binary = require('binary'),
+          signal = require('signal');
+
+      function Plot(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+      }
+
+      Plot.prototype = {
+        draw: function(values) {
+          var max = Math.max.apply(null, values),
+              min = Math.min.apply(null, values);
+
+          this.canvas.width = values.length + 50;
+          this.canvas.height = max - min;
+
+          this.ctx.beginPath();
+          this.ctx.moveTo(0, values[0] - min);
+
+          for (var x = 1; x < values.length; x++) {
+            var y = values[x] - min;
+            this.ctx.lineTo(x, y);
+          }
+
+          this.ctx.stroke();
+
+          this.ctx.fillText(min.toFixed(2), this.canvas.width - 45, 10);
+          this.ctx.fillText(max.toFixed(2), this.canvas.width - 45, this.canvas.height);
+        }
+      };
+
+      function BoolPlot(canvas) {
+        canvas.height = 30;
+
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+      }
+
+      BoolPlot.prototype = {
+        draw: function(values) {
+          this.canvas.width = values.length;
+
+          for (var x = 0; x < values.length; x++) {
+            this.ctx.fillStyle = values[x] ? 'black' : 'white';
+            this.ctx.fillRect(x, 0, 1, this.canvas.height);
+          }
+        }
+      };
+
+      function UI() {
+        this.img = document.createElement('img');
+        this.canvas = document.querySelector('canvas#image');
+        this.ctx = this.canvas.getContext('2d');
+        this.first = null;
+
+        this.graphs = {
+          signal: new Plot(document.querySelector('canvas#signal')),
+          smooth: new Plot(document.querySelector('canvas#smooth')),
+          derivated: new BoolPlot(document.querySelector('canvas#derivated'))
+        };
+
+        var self = this;
+
+        this.img.onload = function() {
+          self.draw();
+        };
+
+        this.canvas.onclick = function(e) {
+          self.click(e);
+        };
+      }
+
+      UI.prototype = {
+        load: function(url) {
+          this.img.src = url;
+        },
+
+        draw: function() {
+          this.canvas.width = this.img.width;
+          this.canvas.height = this.img.height;
+
+          this.ctx.drawImage(this.img, 0, 0);
+        },
+
+        click: function(e) {
+          if (this.first == null) {
+            this.first = [e.offsetX, e.offsetY];
+            return;
+          }
+
+          var width = e.offsetX - this.first[0],
+              x = this.first[0],
+              y = this.first[1];
+
+          var lines = [];
+
+          this.ctx.fillStyle = 'white';
+
+          for (var i = -8; i < 8; i++) {
+            var image = this.ctx.getImageData(x, y + (i * 1), width, 1),
+                data = image.data,
+                grey = binary.greyscale(data);
+
+            lines.push(grey);
+
+            this.ctx.fillRect(x, y + (i * 1), width, 1);
+          }
+
+          var values = signal.average(lines),
+              smooth = signal.smooth(values),
+              derivated = signal.derivate(signal.derivate(smooth)),
+              clean = signal.clean(derivated),
+              bools = clean.map(function(n) {
+                return n > 0 ? true : false;
+              });
+
+          this.graphs.signal.draw(values);
+          this.graphs.smooth.draw(smooth);
+          this.graphs.derivated.draw(bools);
+
+          this.first = null;
+        }
+      };
+
+      var ui = new UI;
+      ui.load('../assets/bad_light.jpg');
+    </script>
+  </body>
+</html>
