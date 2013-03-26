@@ -2,9 +2,10 @@
   "name": "decoder",
   "paths": [".."],
   "local": [
-    "binary",
+    "signal",
     "codes",
-    "reader"
+    "reader",
+    "binary"
   ],
   "scripts": [
     "index.js"

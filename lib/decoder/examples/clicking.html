@@ -9,8 +9,51 @@
 
     <script src="../build/build.js"></script>
     <script>
-      var decoder = require('decoder'),
-          binary = require('binary');
+      function Plotter() {
+        this.canvas = document.createElement('canvas');
+        this.ctx = this.canvas.getContext('2d');
+      }
+
+      Plotter.prototype = {
+        draw: function(values) {
+          var max = Math.max.apply(null, values),
+              min = Math.min.apply(null, values);
+
+          this.canvas.width = values.length;
+          this.canvas.height = max - min;
+
+          this.ctx.beginPath();
+          this.ctx.moveTo(0, values[0] - min);
+
+          for (var x = 1; x < values.length; x++) {
+            var y = values[x] - min;
+            this.ctx.lineTo(x, y);
+          }
+
+          this.ctx.stroke();
+        }
+      };
+
+      function BoolPlotter() {
+        this.canvas = document.createElement('canvas');
+        this.canvas.height = 30;
+
+        this.ctx = this.canvas.getContext('2d');
+      }
+
+      BoolPlotter.prototype = {
+        draw: function(values) {
+          this.canvas.width = values.length;
+
+          for (var x = 0; x < values.length; x++) {
+            this.ctx.fillStyle = values[x] ? 'black' : 'white';
+            this.ctx.fillRect(x, 0, 1, this.canvas.height);
+          }
+        }
+      };
+    </script>
+    <script>
+      var decoder = require('decoder');
 
       var ui = {
         img: document.createElement('img'),
@@ -35,13 +78,10 @@
           if (ui.first == null) {
             ui.first = [x, y];
           } else {
-            var data = ui.ctx.getImageData(ui.first[0], ui.first[1], x - ui.first[0], 1),
+            var data = ui.ctx.getImageData(ui.first[0], ui.first[1], x - ui.first[0], 16),
                 codes = decoder.decode(data);
 
             console.log(codes);
-
-            binary.replace(data.data);
-            ui.ctx.putImageData(data, ui.first[0], ui.first[1]);
 
             ui.first = null;
           }
@@ -56,8 +96,15 @@
       };
 
       ui.init();
+      ui.load('../assets/bad_light.jpg');
 
-      ui.load('../assets/from_book_cropped.jpg');
+      var plotters = {
+        signal: new Plotter,
+        code: new BoolPlotter
+      };
+
+      document.body.appendChild(plotters.signal.canvas);
+      document.body.appendChild(plotters.code.canvas);
     </script>
   </body>
 </html>
