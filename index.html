@@ -5,18 +5,31 @@
   <title>Barcode reader</title>
 
   <style>
-    #container video, #container canvas {
-      position: absolute;
-      left: 0px;
-      top: 0px;
+    #container {
+      float: left;
+      position: relative;
     }
-  
+
     #container video {
       z-index: 1;
     }
 
     #container canvas {
+      position: absolute;
+      left: 0px;
+      top: 0px;
       z-index: 2;
+    }
+
+    #log {
+      float: left;
+      margin: 0;
+      padding: 0;
+    }
+
+    #log li {
+      margin: 10px;
+      display: block;
     }
   </style>
 </head>
@@ -25,15 +38,19 @@
     <canvas></canvas>
   </div>
 
+  <ul id="log"></ul>
+
   <script src="build/build.js"></script>
   <script>
     var UI = require('ui'),
         Reader = require('ui/reader'),
-        Overlay = require('ui/overlay');
+        Overlay = require('ui/overlay'),
+        Logger = require('ui/logger');
 
     var reader = new Reader(document.querySelector('#container')),
         overlay = new Overlay(document.querySelector('#container canvas')),
-        ui = new UI(reader, overlay);
+        logger = new Logger(document.querySelector('#log')),
+        ui = new UI(reader, overlay, logger);
 
     ui.ask();
   </script>

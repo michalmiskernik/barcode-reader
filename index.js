@@ -3,9 +3,10 @@ var webcam = require('webcam'),
 
 module.exports = UI;
 
-function UI(reader, overlay) {
+function UI(reader, overlay, logger) {
   this.reader = reader;
   this.overlay = overlay;
+  this.logger = logger;
 }
 
 UI.prototype.ask = function() {
@@ -27,5 +28,5 @@ UI.prototype.run = function(video) {
 };
 
 UI.prototype.handleCode = function(code) {
-  console.log(code);
+  this.logger.log(code);
 };

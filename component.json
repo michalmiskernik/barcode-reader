@@ -10,6 +10,7 @@
   "scripts": [
     "index.js",
     "overlay.js",
-    "reader.js"
+    "reader.js",
+    "logger.js"
   ]
 }
