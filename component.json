@@ -4,10 +4,12 @@
     "lib"
   ],
   "local": [
-    "binary",
     "checker",
-    "codes",
-    "reader",
     "webcam"
+  ],
+  "scripts": [
+    "index.js",
+    "overlay.js",
+    "reader.js"
   ]
 }
