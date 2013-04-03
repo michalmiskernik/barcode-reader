@@ -2,29 +2,41 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Barcode reader</title>
+  <title>Čítačka kódov</title>
 
   <style>
-    #container {
+    body {
+      margin: 10px;
+    }
+
+    #reader {
       float: left;
       position: relative;
     }
 
-    #container video {
+    #reader .container video {
       z-index: 1;
     }
 
-    #container canvas {
+    #reader .container canvas {
       position: absolute;
       left: 0px;
       top: 0px;
       z-index: 2;
     }
 
+    #reader .help {
+      color: #777;
+      margin: 20px;
+    }
+
     #log {
       float: left;
-      margin: 0;
+      margin: 0 10px;
       padding: 0;
+      width: 300px;
+      min-height: 20px;
+      border: 1px solid #AAA;
     }
 
     #log li {
@@ -34,8 +46,15 @@
   </style>
 </head>
 <body>
-  <div id="container">
-    <canvas></canvas>
+  <div id="reader">
+    <div class="container">
+      <canvas></canvas>
+    </div>
+
+    <p class="help">
+      Nasmerujte celý čiarový kód presne do výrezu a chvíľu počkajte.<br>
+      Rozpoznaný čiarový kód sa zobrazí napravo.
+    </p>
   </div>
 
   <ul id="log"></ul>
@@ -47,8 +66,8 @@
         Overlay = require('ui/overlay'),
         Logger = require('ui/logger');
 
-    var reader = new Reader(document.querySelector('#container')),
-        overlay = new Overlay(document.querySelector('#container canvas')),
+    var reader = new Reader(document.querySelector('#reader .container')),
+        overlay = new Overlay(document.querySelector('#reader canvas')),
         logger = new Logger(document.querySelector('#log')),
         ui = new UI(reader, overlay, logger);
 
