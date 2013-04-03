@@ -5,30 +5,25 @@
   <title>Barcode reader</title>
 
   <style>
-    /*canvas {
-      position: absolute;
-      left: 200px;
-      top: 200px;
-    }*/
-
-    #container {
+    #container video, #container canvas {
       position: absolute;
       left: 0px;
       top: 0px;
+    }
+  
+    #container video {
       z-index: 1;
     }
 
-    #overlay {
-      position: absolute;
-      left: 0px;
-      top: 0px;
+    #container canvas {
       z-index: 2;
     }
   </style>
 </head>
 <body>
-  <div id="container"></div>
-  <canvas id="overlay"></canvas>
+  <div id="container">
+    <canvas></canvas>
+  </div>
 
   <script src="build/build.js"></script>
   <script>
@@ -37,7 +32,7 @@
         Overlay = require('ui/overlay');
 
     var reader = new Reader(document.querySelector('#container')),
-        overlay = new Overlay(document.querySelector('#overlay')),
+        overlay = new Overlay(document.querySelector('#container canvas')),
         ui = new UI(reader, overlay);
 
     ui.ask();
