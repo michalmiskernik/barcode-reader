@@ -3,9 +3,11 @@
   "paths": [
     "lib"
   ],
+  "dependencies": {
+    "michalmiskernik/webcam": "*"
+  },
   "local": [
-    "checker",
-    "webcam"
+    "checker"
   ],
   "scripts": [
     "index.js",

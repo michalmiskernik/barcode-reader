@@ -16,7 +16,7 @@ UI.prototype.ask = function() {
     this_.run(video);
   }
 
-  webcam({ success: success });
+  webcam.record(success);
 };
 
 UI.prototype.run = function(video) {
