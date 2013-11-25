@@ -4,7 +4,7 @@
     "lib"
   ],
   "dependencies": {
-    "michalmiskernik/webcam": "*"
+    "miscer/webcam": "*"
   },
   "local": [
     "checker"
